@@ -3,14 +3,42 @@ Joey Harper
 2024 08 28
 Slot Machine
 """
-#Program follows along in class
+#MY own version that doesn't follow class but moves along in my free time.
 import random
 import time
 
 bankRoll = 100
 
+
+def gameLoop():
+    leave = input("Would you like to play again? Y/N ").upper()  
+    if leave == "Y":
+        placeBets()
+    elif leave == "N":
+        print("\nThanks for Play Come Back Again!!")
+    else:
+        print("\nInvalid Choice It's not that hard")
+        gameLoop()
+
+def bankRun(bankInfo):
+    runToBank = input("Would you like to add funds? Y/N ").upper()
+    if runToBank == "Y":
+        amount = input("\nHow much would you like to add? Choose between 10 and 200: ")
+        if int(amount) < 10 and int(amount) > 200:
+            print("\nInvalid entry no money for you!")
+            return bankInfo
+        else:
+            print("\nPlease provide me with your banking information!")
+            time.sleep(2)
+            print("\nJust kinding here's your \"cash\"\n")
+            bankInfo += int(amount)
+            return bankInfo
+    else:
+        return bankInfo
+
 def placeBets():
     global bankRoll
+    
     bet = 5
 
     melon = 0
@@ -19,13 +47,12 @@ def placeBets():
     lemon = 0
     cherry = 0
 
-    melonPay = 5
-    sevenPay = 20
-    barPay = 10
-    cherryPay = 15
+    melonPay = 3
+    sevenPay = 12
+    barPay = 5
+    cherryPay = 7
 
     #melon, 7, bar, lemon, cherry
-    roll = []
     winnings = 0
 
     print("Spinning Sots...")
@@ -33,24 +60,27 @@ def placeBets():
     
     bankRoll -= bet
     for i in range(1,4):
-        slot1 = random.randint(1,5)
-        if slot1 == 1:
-            roll.append("Melon")
+        slot1 = random.randint(1,1000)
+        if slot1 >= 1 and slot1 <= 175:
+            melon += 1
             print("Melon")
-        elif slot1 == 2:
-            roll.append("7")
+        elif slot1 >= 900:
+            seven += 1
             print("7")
-        elif slot1 == 3:
-            roll.append("Bar")
+        elif slot1 >= 800 and slot1 <= 899:
+            bar += 1
             print("bar")
-        elif slot1 == 4:
-            roll.append("Lemon")
+        elif slot1 >= 325 and slot1 <= 500:
+            lemon += 1
             print("lemon")
-        elif slot1 == 5:
-            roll.append("Cherry")
-            print("cherry")    
+        elif slot1 >= 501 and slot1 <= 799:
+            cherry += 1
+            print("cherry")
+        else:
+            print("gap")
+        time.sleep(.5)
 
-    for i in roll:
+    """for i in roll:
         if i == "Melon":
             melon += 1
         elif i == "7":
@@ -60,7 +90,7 @@ def placeBets():
         elif i == "Lemon":
             lemon += 1
         elif i == "Cherry":
-            cherry += 1
+            cherry += 1"""
 
     if melon >= 2:
         winnings = melon * melonPay
@@ -75,7 +105,7 @@ def placeBets():
         
 
     bankRoll +=winnings
-    print(roll)
+
     if winnings == 0:
         print("\nYou won NOTHING!! You get NOTHING!!!")
     else:
@@ -83,16 +113,9 @@ def placeBets():
     print(f"You now have ${bankRoll}\n")
     #print(melon, seven, bar, lemon, cherry)
     
-
-    def gameLoop():
-        leave = input("Would you like to play again? Y/N ").upper()  
-        if leave == "Y":
-            placeBets()
-        elif leave == "N":
-            print("\nThanks for Play Come Back Again!!")
-        else:
-            print("Invalid Choice It's not that hard")
-            gameLoop()
+    if bankRoll <= 90:
+        bankRoll = bankRun(bankRoll)
+        print(f"Your current bank roll is {bankRoll} good luck!!\n")
     gameLoop()
 
 placeBets()
